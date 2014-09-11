@@ -1,11 +1,11 @@
 int rad = 200;
-int x = 0;
-int y = 0;
+int x = 399;
+int y = 201;
 
-int cx = 0;
-int cy = 0;
+int cx = 800;
+int cy = 201;
 
-float a = 0;
+float a = 0.02;
 
 boolean xturn = true;
 
@@ -28,6 +28,7 @@ void draw() {
     }
     xturn = !xturn;
   }
+  println(cx + " "+cy);
   println( " x: " + x + " y:  " +y);
   point(x,y);
 }
@@ -45,7 +46,7 @@ void moveY(){
 void compute(){
   a += 0.01; 
   
-  float cfx = cos(a)*rad + rad;
+  float cfx = cos(a)*rad*2 + rad*2;
   float cfy = sin(a)*rad + rad;
   
   cx = (int) cfx;
