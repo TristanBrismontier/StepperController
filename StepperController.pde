@@ -1,11 +1,13 @@
 import processing.serial.*;  
 
 Serial port;
+float ratioX = 10.5;
+int ratioY = 6;
 int nbStep = 1;
 int posX = 0;
 int posY = 0;
 boolean xp, xn, yp, yn =false;
-boolean process = true;
+boolean process = false;
 
 boolean drawBatman = true;
 PImage img;
@@ -29,7 +31,8 @@ boolean xturn = true;
 
 
 void setup() {
-  size(2000, 1000);
+  background(255);
+ size(3500  , 2000);
   frameRate(100);
   println(Serial.list()); // List COM-ports
   //select second com-port from the list (COM3 for my device)
@@ -45,8 +48,8 @@ void setup() {
     for (int x=0; x< img.width; x++) {
       for (int y=0; y< img.height; y++) {
         int loc = x+y *img.width;
-        if (brightness(img.pixels[loc]) < 10) {
-          s = new Point(x*3.5, y*2.5);
+        if (brightness(img.pixels[loc]) < 90) {
+          s = new Point(x*ratioX, y*ratioY);
           x= (int)(s.getX());
           y=(int)(s.getY());
           return;
@@ -59,15 +62,12 @@ void setup() {
 void draw()
 {
   if (process) {
-
     if ( (x == cx && y ==cy) || count < 7) {
       compute();
       count++;
     }
     else {
-
-
-
+      point(cx,cy);
       if (xturn) {
         moveX();
       }
@@ -148,15 +148,15 @@ boolean checkPoint(float x, float y){
 } 
 void compute() {
   if(drawBatman){
-    int  i = (int)(s.getX()/3.5);
-  int j = (int) (s.getY()/2); 
-  for(int z=1 ; z<40;z++){
+    int  i = (int)(s.getX()/ratioX);
+  int j = (int) (s.getY()/ratioY); 
+  for(int z=1 ; z<100;z++){
     for(int x=i-z; x<i+z;x++){
       for(int y=j-z; y<j+z;y++){
         int loc = x+y *img.width;
-          if((brightness(img.pixels[loc]) < 2) && checkPoint(x*3.5,y*2)){
+          if(loc>0 && loc < img.pixels.length && (brightness(img.pixels[loc]) < 90) && checkPoint(x*ratioX,y*ratioY)){
             last=s;
-            s = new Point(x*3.5,y*2);
+            s = new Point(x*ratioX,y*ratioY);
             pointList.add(s);
             cx = (int) (s.getX());
             cy = (int) (s.getY());
